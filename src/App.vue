@@ -1,28 +1,28 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <games-list v-bind:games="games" />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
+import GamesList from './components/GamesList.vue'
 export default {
   name: 'app',
+  data(){
+    return {
+      games: []
+    }
+  },
+  mounted(){
+    fetch('https://api.rawg.io/api/games?dates=2019-01-01,2019-12-31&ordering=-added&page_size=40')
+    .then(result => result.json())
+    .then(data => this.games = data.results)
+  },
   components: {
-    HelloWorld
+    'games-list': GamesList
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+
 </style>
