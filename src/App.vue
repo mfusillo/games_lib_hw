@@ -1,7 +1,7 @@
 <template>
   <section>
-    <games-list v-bind:games="games" />
-    <game-details v-bind:gameSelectedId="gameSelected" v-bind:searchTyped="searchTyped" />
+    <games-list v-bind:games="filteredGames" v-bind:parentGameId="gameSelectedId"/>
+    <game-details v-bind:game="renderGame" />
   </section>
 </template>
 
@@ -16,7 +16,7 @@ export default {
   data(){
     return {
       games: [],
-      gameSelected: null,
+      gameSelectedId: null,
       searchTyped: ""
     }
   },
@@ -34,14 +34,32 @@ export default {
       )
     )
 
-    eventBus.$on("game-selected", (gameSelected) => {
-      this.gameSelected = gameSelected
+    eventBus.$on("game-selected", (gameSelectedId) => {
+      this.gameSelectedId = gameSelectedId
     })
 
     eventBus.$on("search-typed", (searchTyped) =>{
       this.searchTyped = searchTyped
     })
   },
+
+  computed:{
+    renderGame(){
+      return this.games.find(game => game.id === this.gameSelectedId)
+    },
+    filteredGames(){
+      const foundGames = this.games.filter(game => {
+        return game.name.toLowerCase().includes(this.searchTyped.toLowerCase())
+      })
+      if (foundGames.length === 0){
+        this.gameSelectedId = "n/a"
+        return [{name: "Not Found", id: "n/a"}]
+      }
+      this.gameSelectedId = foundGames[0].id
+      return foundGames
+    }
+  },
+
   components: {
     'games-list': GamesList,
     'game-details': GameDetails
@@ -52,5 +70,24 @@ export default {
 </script>
 
 <style>
+
+h2{
+  font-size: 2em;
+}
+
+h3{
+  font-size: 1.8em;
+}
+body{
+  font-family: 'Oswald', serif;
+  background-color: #033F63;
+  color: #FEDC97;
+
+}
+
+::selection {
+  color: #033F63;
+  background: #7C9885;
+}
 
 </style>
