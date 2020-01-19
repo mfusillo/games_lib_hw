@@ -8,13 +8,36 @@
         <h3>Play Trailer</h3>
         <video v-bind:src="game.clip.clip" controls></video>
       </div>
+      <form>
+        <input type="radio" v-model="ratingScore" value="1">1
+        <input type="radio" v-model="ratingScore" value="2">2
+        <input type="radio" v-model="ratingScore" value="3">3
+        <input type="radio" v-model="ratingScore" value="4">4
+        <input type="radio" v-model="ratingScore" value="5">5
+      </form>
   </section>
 </template>
 
 <script>
+
+import { eventBus } from '../main.js'
+
 export default {
   name: 'game-details',
-  props: ['game']
+  props: ['game', 'parentRatingScore'],
+  data(){
+    return{
+      ratingScore: this.parentRatingScore
+    }
+  },
+  watch: {
+    ratingScore(){
+      eventBus.$emit("rating-selected", this.ratingScore)
+      }
+    },
+    parentRatingScore(){
+      this.ratingScore = this.parentRatingScore
+    }
 }
 </script>
 

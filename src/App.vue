@@ -1,7 +1,7 @@
 <template>
   <section>
     <games-list v-bind:games="filteredGames" v-bind:parentGameId="gameSelectedId"/>
-    <game-details v-bind:game="renderGame" />
+    <game-details v-bind:game="renderGame" v-bind:parentRatingScore="parentRatingScore" />
   </section>
 </template>
 
@@ -17,7 +17,8 @@ export default {
     return {
       games: [],
       gameSelectedId: null,
-      searchTyped: ""
+      searchTyped: "",
+      parentRatingScore: null
     }
   },
   mounted(){
@@ -41,6 +42,11 @@ export default {
     eventBus.$on("search-typed", (searchTyped) =>{
       this.searchTyped = searchTyped
     })
+
+    eventBus.$on("rating-selected", (ratingScore) =>{
+      this.parentRatingScore = ratingScore
+    })
+
   },
 
   computed:{
