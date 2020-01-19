@@ -4,7 +4,7 @@
     <form v-on:submit.prevent>
       <input type="text" v-model="searchText" placeholder="Enter a name to search"><br>
       <select v-model="selectedGameId">
-        <option selected disabled value="">Select a game</option>
+        <option selectedsw disabled value="">Select a game</option>
         <option v-bind:value ="game.id" v-for="game of games">{{game.name}}</option>
       </select>
     </form>
@@ -41,6 +41,10 @@ export default {
 </script>
 
 <style lang="css" scoped>
+
+section.search-bar{
+  text-align: center;
+}
 
 input {
   background-color: #B5B682;
